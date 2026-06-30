@@ -1,6 +1,6 @@
 {
   "name": "ai-canvas",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AI 画布 - 多中转站对接生图/生视频（卡片白板式）",
   "author": "dangthiphuong2491991-a11y",
   "main": "./out/main/index.js",

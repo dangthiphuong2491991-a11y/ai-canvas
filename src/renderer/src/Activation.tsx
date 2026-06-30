@@ -1,12 +1,13 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type CSSProperties } from 'react'
 
-// 激活界面：未激活时全屏拦截。显示本机机器码（发给作者签发），粘贴激活码激活。
+// 激活界面：未激活时全屏拦截。显示本机机器码（发给作者签发），粘贴 / 导入 txt 激活码激活。
 export function Activation({ onActivated }: { onActivated: () => void }): JSX.Element {
   const [machineId, setMachineId] = useState('')
   const [code, setCode] = useState('')
   const [msg, setMsg] = useState('')
   const [busy, setBusy] = useState(false)
   const [copied, setCopied] = useState(false)
+  const fileRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
     window.api?.license
@@ -28,10 +29,9 @@ export function Activation({ onActivated }: { onActivated: () => void }): JSX.El
     )
   }
 
-  const submit = async (): Promise<void> => {
-    const c = code.trim()
+  const doActivate = async (c: string): Promise<void> => {
     if (!c) {
-      setMsg('请粘贴激活码')
+      setMsg('请粘贴激活码，或导入激活码 txt 文件')
       return
     }
     setBusy(true)
@@ -47,6 +47,27 @@ export function Activation({ onActivated }: { onActivated: () => void }): JSX.El
       setMsg('激活失败')
     } finally {
       setBusy(false)
+    }
+  }
+
+  const submit = (): Promise<void> => doActivate(code.trim())
+
+  // 导入作者发来的激活码 txt（从文件里自动提取那一长串激活码，免手动复制粘贴出错）
+  const onImportTxt = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const f = e.target.files?.[0]
+    e.target.value = ''
+    if (!f) return
+    try {
+      const text = await f.text()
+      const m = text.match(/[A-Za-z0-9_-]{40,}\.[A-Za-z0-9_-]{40,}/)
+      if (!m) {
+        setMsg('这个 txt 里没找到激活码，请确认选的是作者发来的激活码文件')
+        return
+      }
+      setCode(m[0])
+      await doActivate(m[0])
+    } catch {
+      setMsg('读取 txt 文件失败')
     }
   }
 
@@ -78,6 +99,11 @@ export function Activation({ onActivated }: { onActivated: () => void }): JSX.El
 
         <button style={{ ...btnPrimary, opacity: busy ? 0.6 : 1 }} onClick={submit} disabled={busy}>
           {busy ? '激活中…' : '激活'}
+        </button>
+
+        <input ref={fileRef} type="file" accept=".txt" hidden onChange={onImportTxt} />
+        <button style={{ ...btnImport, opacity: busy ? 0.6 : 1 }} onClick={() => fileRef.current?.click()} disabled={busy}>
+          📄 导入激活码 txt 文件（免复制，防出错）
         </button>
       </div>
     </div>
@@ -156,5 +182,17 @@ const btnGhost: CSSProperties = {
   background: 'transparent',
   color: '#eee',
   fontSize: 13,
+  cursor: 'pointer'
+}
+const btnImport: CSSProperties = {
+  width: '100%',
+  marginTop: 10,
+  padding: '11px 0',
+  border: '1px solid rgba(255,255,255,0.16)',
+  borderRadius: 10,
+  background: 'transparent',
+  color: '#dcdcdc',
+  fontSize: 13.5,
+  fontWeight: 500,
   cursor: 'pointer'
 }
