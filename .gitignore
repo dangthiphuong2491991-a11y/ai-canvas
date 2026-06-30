@@ -1,0 +1,17 @@
+node_modules/
+out/
+dist/
+release/
+*.log
+test-output.png
+.DS_Store
+
+# 密钥 / 本地环境（绝不提交）
+.env
+.env.local
+.env.*.local
+keys/
+*.pem
+
+# 本地编辑器/agent 配置
+.claude/

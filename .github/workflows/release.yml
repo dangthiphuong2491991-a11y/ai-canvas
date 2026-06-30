@@ -1,0 +1,41 @@
+name: release
+
+# 推送 vX.Y.Z 标签时：构建 Windows 安装包并发布到 GitHub Releases（客户端自动更新会读取它）
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      # OSS 图床密钥从仓库 Secrets 注入（Settings → Secrets and variables → Actions）
+      - name: Write .env from secrets
+        shell: pwsh
+        run: |
+          "MAIN_VITE_OSS_KEY_ID=${{ secrets.OSS_KEY_ID }}"         | Out-File -Encoding ascii .env
+          "MAIN_VITE_OSS_KEY_SECRET=${{ secrets.OSS_KEY_SECRET }}" | Out-File -Encoding ascii -Append .env
+          "MAIN_VITE_OSS_BUCKET=${{ secrets.OSS_BUCKET }}"         | Out-File -Encoding ascii -Append .env
+          "MAIN_VITE_OSS_ENDPOINT=${{ secrets.OSS_ENDPOINT }}"     | Out-File -Encoding ascii -Append .env
+          "MAIN_VITE_OSS_CDN=${{ secrets.OSS_CDN }}"               | Out-File -Encoding ascii -Append .env
+          "MAIN_VITE_OSS_PREFIX=${{ secrets.OSS_PREFIX }}"         | Out-File -Encoding ascii -Append .env
+
+      - name: Build renderer + main
+        run: npx electron-vite build
+
+      - name: Package & publish to Releases
+        run: npx electron-builder --win --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

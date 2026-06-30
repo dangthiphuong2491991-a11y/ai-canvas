@@ -1,0 +1,86 @@
+根据提供的小说原文，推导出文中出现过的**所有重要物品**。物品可能有多种代称，要囊括文中提到的所有关键物品，包括但不限于以下类别：
+
+- **武器类**：能量光剑、等离子步枪、粒子束手枪、电磁轨道炮、纳米折叠刀刃、高频振动战刃、激光狙击枪等
+- **防具/装备类**：纳米机甲部件、能量护盾发生器、全息战术头盔、外骨骼增幅装甲、隐身迷彩模块、力场防护手套等
+- **饰品/信物类**：身份认证芯片、全息数据晶核、星际军衔徽章、能量铭刻勋章、量子加密存储坠、全息记忆影像球等
+- **科技/道具类**：全息投影终端、量子通讯器、生物扫描仪、AI辅助终端、纳米修复注射器、能量补给胶囊等
+- **日用/器物类**：合金密封水壶、纳米急救包、全息星图卡、便携式能量灯、数据记录板、旧纸质书册等
+- **食物/药品类**：高能营养胶囊、净化水晶片、辐射中和剂、战斗增幅注射液、太空压缩口粮、合成蛋白块等
+- **交通/载具相关**：单兵悬浮飞行器、重型机甲载具、星际穿梭艇、改装陆地巡航车、货运飞船舱段等
+- **建筑/场景核心物件**：全息广告投影柱、星际纪念碑、能量机关装置、量子密码门禁锁等
+- **容器/收纳类**：能量弹药箱、密封合金储存罐、医疗冷藏箱、战术背包模组、数据核心存储盒等
+- **其他具有情节意义的物品**
+
+**不得遗漏任何在情节中被提及、描述或起到推动作用的物品，哪怕只出现一次。**
+
+输出的格式为JSON数组，每个物品包含以下三个字段：
+- **name**（物品名称）
+- **aliases**（代称，多个代称用逗号分割）
+- **description**（详细描述）
+
+---
+
+### 物品描述规则：
+
+1. **description（详细描述）必须输出英文**
+
+2. **每条description必须以以下固定前缀开头：**
+   > `Three-view reference sheet (front view, side view, back view) on a pure white background.`
+   然后再接物品的具体外观描述。
+
+3. **物品的整体美学风格必须为「皮克斯式现代3D卡通动画电影风格 (Pixar-style modern 3D cartoon animation film aesthetic)」**。所有物品必须体现该风格下的特征：圆润饱满的造型、柔和讨喜的曲线轮廓、明亮鲜艳且温暖的色彩搭配、卡通化但精致的细节、柔软的次表面散射质感、Q弹有亲和力的体积感。物品整体呈现出动画电影中道具的可爱、干净、富有生命力的观感，材质表现为略带光泽的塑料/橡胶/布料/金属等卡通化处理后的质感，光影柔和明快。物品可以根据使用状态加入适度的卡通化使用痕迹（如轻微磨损、可爱的小划痕、轻微凹陷等）——但核心质感依然是讨喜、圆润、精致的动画道具风格而非写实硬核。
+
+4. **物品上如果有文字、符号、铭文等标记**，应使用符合动画卡通世界观的风格（如圆润可爱的卡通字体标签、手绘风格的图标贴纸、简洁明快的卡通铭牌、俏皮的图形标记等）
+
+5. **name必须是中文**，aliases根据文案全文的语言风格选择是英文还是中文
+
+6. **description中不要出现任何人物描述或人名，只描述物品本身的外观特征**，必须包含外观、材质、颜色、尺寸、使用状态、特殊标记等特征
+
+7. **食物/药品类物品**的description需描述其外形、颜色、质地、包装/容器的卡通化质感等视觉特征，同样以三视图前缀开头
+
+8. **所有物品的渲染质感必须体现以下关键词**：皮克斯式高端现代3D动画电影级渲染、圆润讨喜的角色道具设计美学、圆润饱满的卡通造型、柔和的次表面散射、明亮温暖的色彩、卡通化的塑料/橡胶/金属/布料质感、柔软讨喜的体积感、干净精致的动画建模细节、柔和明快的光影
+
+---
+
+以下是输出的JSON样例：
+
+```json
+[
+  {
+    "name": "等离子能量手枪",
+    "aliases": "手枪,配枪,等离子枪",
+    "description": "Three-view reference sheet (front view, side view, back view) on a pure white background. A cute, rounded plasma energy pistol rendered in a Pixar-style modern 3D cartoon animation film aesthetic. The overall silhouette is chunky, smooth, and friendly with soft beveled edges and playful curves rather than sharp angles. The body is a glossy cartoon plastic finish in a cheerful teal-and-cream two-tone color scheme. The barrel features a translucent candy-blue energy chamber that emits a soft, friendly inner glow. A rounded comfy grip is finished in a soft matte coral-orange rubbery texture with a cute dimpled pattern. A small cartoon-style digital counter on the rear displays chunky rounded glowing numbers. A playful hand-drawn-style icon sticker and a rounded cartoon font label are placed on the side. Overall length approximately 24cm. The surface shows a few endearing little scuffs and a tiny dent near the muzzle from playful use. Pixar-style high-end modern 3D animated film-grade rendering with appealing rounded prop design. Soft subsurface scattering, bright warm colors, rounded plump cartoon shapes, glossy cartoonish plastic and rubber materials, soft inviting volume, clean polished animation modeling details, and soft cheerful lighting."
+  },
+  {
+    "name": "量子身份认证芯片",
+    "aliases": "芯片,身份芯片,ID晶核",
+    "description": "Three-view reference sheet (front view, side view, back view) on a pure white background. A cute rounded hexagonal quantum identity chip approximately 3.5cm across and 0.7cm thick, rendered in a Pixar-style modern 3D cartoon animation film aesthetic. The shell is a glossy translucent candy-like polymer in a soft mint-green tone revealing simplified, cartoon-stylized circuitry layers beneath. A small rounded display panel projects a friendly little rotating emblem in soft cyan cartoon glow. The edges are trimmed with smooth glossy silver cartoon metal and a soft glowing pastel-blue line. The underside shows a neat grid of rounded golden contact dots. A tiny rounded cartoon font code label sits along one edge. A cute chunky soft-loop attachment is fixed to one corner for wearing. The overall look is clean, plump, and endearing. Pixar-style high-end modern 3D animated film-grade rendering, soft subsurface scattering, glossy cartoon plastic and metal materials, bright warm pastel colors, rounded friendly shapes, and soft cheerful lighting."
+  },
+  {
+    "name": "高能营养胶囊",
+    "aliases": "口粮,能量胶囊,营养补给",
+    "description": "Three-view reference sheet (front view, side view, back view) on a pure white background. A set of three chunky, rounded high-energy nutrition capsules, each approximately 6cm long and 1.8cm in diameter, packaged in a cheerful translucent blister pack, rendered in a Pixar-style modern 3D cartoon animation film aesthetic. Each capsule has a smooth glossy pearl-cream cartoon shell with a soft pastel sheen, segmented by a friendly soft-glowing golden ring at the center. One end has a rounded twist-open cap in a cute candy-orange tone. The blister pack backing is a soft matte silver with playful hand-drawn-style nutritional icon stickers, a cute rounded cartoon code label, and a chunky rounded font batch number. The packaging looks clean with only a couple of endearing little crinkles. Pixar-style high-end modern 3D animated film-grade rendering, soft subsurface scattering on the capsule shells, glossy cartoonish plastic and foil materials, bright warm inviting colors, rounded plump shapes, and soft cheerful lighting."
+  },
+  {
+    "name": "全息战术数据终端",
+    "aliases": "终端,数据板,战术终端",
+    "description": "Three-view reference sheet (front view, side view, back view) on a pure white background. A portable tactical data terminal approximately 20cm x 12cm x 1.6cm with chunky rounded corners, rendered in a Pixar-style modern 3D cartoon animation film aesthetic. The main body is a glossy cartoon plastic in a friendly slate-blue-and-cream two-tone scheme with soft beveled edges. The front face has a rounded screen that projects a soft, friendly floating cartoon holographic interface in gentle ice-blue glow. The left edge has a row of three big chunky rounded buttons with soft cyan glow rings. The rear panel has a soft matte rubbery texture with a cute embossed rounded badge. A short stubby antenna with a rounded tip pokes out from the top. A playful little rotating cartoon compass icon sits in the top-right corner. The device shows endearing light wear—soft little edge scuffs and a tiny cute scratch on the lower bezel. Pixar-style high-end modern 3D animated film-grade rendering, soft subsurface scattering, glossy cartoon plastic and soft rubber materials, bright warm colors, rounded friendly shapes, clean polished animation modeling, and soft cheerful lighting."
+  },
+  {
+    "name": "纳米修复注射器",
+    "aliases": "注射器,修复针,纳米治疗针",
+    "description": "Three-view reference sheet (front view, side view, back view) on a pure white background. A cute streamlined auto-injector approximately 15cm long and 3cm in diameter with a smooth chunky rounded cylindrical body, rendered in a Pixar-style modern 3D cartoon animation film aesthetic. The shell is glossy cartoon plastic in a soft pearl-cream tone with a single gentle seam line. The central section has a rounded translucent window revealing a friendly glowing pastel mint-green nano-repair fluid swirling inside with cute floating sparkle particles. The tip has a rounded protective cap in soft mint-silver. The rear has a big chunky rounded push-button ringed by a soft green glowing indicator band. A cheerful rounded cartoon label band wraps the upper section with a playful icon sticker and a cute rounded font code. The surface looks clean and friendly. Pixar-style high-end modern 3D animated film-grade rendering, soft subsurface scattering, glossy cartoon plastic materials, translucent fluid chamber with soft inner glow and floating sparkles, bright warm pastel colors, rounded plump shapes, and soft cheerful lighting."
+  }
+]
+```
+
+---
+
+提供的小说原文为：
+{{小说原文}}
+提供的推文文案为：
+{{推文文案}}
+提供的故事情节为：
+{{故事情节}}
+
+根据上面的信息输出物品信息的JSON数组，注意描述中不要出现任何人物描述或人名，只描述物品本身的外观特征。只输出JSON格式，可以包裹在```json代码块中。
