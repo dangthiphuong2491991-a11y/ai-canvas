@@ -12,8 +12,9 @@ installBrowserApiFallback()
 function Gate(): JSX.Element {
   const [state, setState] = useState<'loading' | 'locked' | 'ok'>('loading')
   useEffect(() => {
-    if (!window.api?.license) {
-      setState('ok') // 浏览器 dev 无 preload，直接放行
+    // dev 模式（electron-vite dev / 浏览器）直接放行，方便开发；打包后才强制激活
+    if (import.meta.env.DEV || !window.api?.license) {
+      setState('ok')
       return
     }
     window.api.license

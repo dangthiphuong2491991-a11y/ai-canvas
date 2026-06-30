@@ -11,8 +11,9 @@ import { getMachineId, loadStatus, activate as activateLicense, isActivated } fr
 
 let mainWindow: BrowserWindow | null = null
 
-// 未激活时拒绝一切生成调用（防止有人绕过前端激活界面直接调 IPC）
+// 未激活时拒绝一切生成调用（防止有人绕过前端激活界面直接调 IPC）。dev 模式放行，方便开发。
 function guard(): void {
+  if (process.env['ELECTRON_RENDERER_URL']) return
   if (!isActivated()) throw new Error('未激活：请先在软件内输入激活码')
 }
 
