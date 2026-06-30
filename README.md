@@ -17,9 +17,10 @@ npm run dev
   `src/main/licensing.ts` 的 `PUBLIC_KEY_B64`。
 - 给客户签发激活码：
   1. 客户在「激活界面」里看到本机**机器码**，发给你；
-  2. 你运行 `npm run keygen <机器码> [备注名] [有效天数]`：
-     - 永久：`npm run keygen A1B2-C3D4-... 张三`
-     - 一年：`npm run keygen A1B2-C3D4-... 张三 365`
+  2. 你在项目文件夹运行 `node scripts/keygen.mjs <机器码> [备注名] [有效天数]`：
+     - 永久：`node scripts/keygen.mjs A1B2-C3D4-... 张三`
+     - 一年：`node scripts/keygen.mjs A1B2-C3D4-... 张三 365`
+     - （需要本机有 `keys/private_key.pem`）
   3. 把生成的激活码发回客户，客户粘贴即激活。
 - 激活码与该机器绑定，不能共享；**未激活时无法生成（主进程会拒绝所有生成请求）**。
 - 换签名密钥会让所有旧激活码失效。
