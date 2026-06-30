@@ -15,6 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 保险：没配 OSS Secrets 就中止，避免发布出「没有 OSS 密钥」的坏包覆盖好包
+      - name: Ensure OSS secrets are set
+        shell: pwsh
+        run: |
+          if ("${{ secrets.OSS_KEY_ID }}" -eq "" -or "${{ secrets.OSS_KEY_SECRET }}" -eq "") {
+            Write-Error "未配置 OSS_KEY_ID / OSS_KEY_SECRET 等 Secrets，已中止发版（以免打出无 OSS 密钥的包）。请到 仓库 Settings → Secrets and variables → Actions 配置后再推标签。"
+            exit 1
+          }
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
